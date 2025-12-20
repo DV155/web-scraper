@@ -1,10 +1,16 @@
 from urllib.request import urlopen
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
+import csv
 
 #Code requires local file with the data
 fileName = input("Enter file name:")
 fhand = open(fileName)
+
+csvfile = open('prices.csv', 'w', newline='')
+writer = csv.writer(csvfile)
+writer.writerow(['Website', 'Previous Line', 'Price Line', 'Next Line'])
+
 for line in fhand:
     try:
         url = line.rstrip()
@@ -25,9 +31,12 @@ for line in fhand:
                 for counter, prices in enumerate(neededPrice): #Logic to get prices
                     if "€" in prices.text:
                         try:
-                            print(neededPrice[counter - 1].text)
-                            print(neededPrice[counter].text)
-                            print(neededPrice[counter + 1].text)
+                            writer.writerow([
+                                url,
+                                neededPrice[counter - 1].text.strip(),
+                                neededPrice[counter].text.strip(),
+                                neededPrice[counter + 1].text.strip()
+                            ])
                         except:
                             continue
                     else:
@@ -39,3 +48,6 @@ for line in fhand:
     except:
         print("Invalid link")
         continue
+
+csvfile.close()
+print("Data saved to prices.csv")
