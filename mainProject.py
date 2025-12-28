@@ -9,7 +9,7 @@ fhand = open(fileName)
 
 csvfile = open('prices.csv', 'w', newline='')
 writer = csv.writer(csvfile)
-writer.writerow(['Website', 'Previous Line', 'Price Line', 'Next Line'])
+writer.writerow(['Website', 'Previous Line', 'Price Line', 'Next Line']) #Creates CSV
 
 for line in fhand:
     try:
